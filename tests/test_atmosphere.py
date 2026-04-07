@@ -1,6 +1,6 @@
 """Sanity checks for the ISA atmosphere model."""
 
-from mission_mcp.physics.atmosphere import isa, mach_to_tas, dynamic_pressure
+from mission_mcp.physics.atmosphere import dynamic_pressure, isa, mach_to_tas
 
 
 def test_sea_level():

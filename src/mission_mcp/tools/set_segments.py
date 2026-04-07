@@ -42,14 +42,16 @@ def set_segments(payload: dict[str, Any]) -> dict[str, Any]:
                     "message": f"Segment {i}: type '{seg_type}' not in {sorted(VALID_SEGMENT_TYPES)}",
                 }
             }
-        validated.append({
-            "type": seg_type,
-            "start_altitude_m": float(seg.get("start_altitude_m", 0)),
-            "end_altitude_m": float(seg.get("end_altitude_m", 0)),
-            "mach": float(seg.get("mach", 0)),
-            "distance_m": float(seg.get("distance_m", 0)),
-            "duration_s": float(seg.get("duration_s", 0)),
-        })
+        validated.append(
+            {
+                "type": seg_type,
+                "start_altitude_m": float(seg.get("start_altitude_m", 0)),
+                "end_altitude_m": float(seg.get("end_altitude_m", 0)),
+                "mach": float(seg.get("mach", 0)),
+                "distance_m": float(seg.get("distance_m", 0)),
+                "duration_s": float(seg.get("duration_s", 0)),
+            }
+        )
 
     session = session_manager.get(str(session_id))
     session.segments = validated

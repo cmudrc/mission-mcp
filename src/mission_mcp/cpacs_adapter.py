@@ -8,7 +8,6 @@ back into ``//vehicles/aircraft/model/analysisResults/mission``.
 from __future__ import annotations
 
 import logging
-import math
 from typing import Any
 from xml.etree import ElementTree as ET
 
@@ -111,8 +110,13 @@ def _build_default_segments(inputs: dict[str, Any]) -> list[dict[str, Any]]:
         {"type": "taxi", "duration_s": 300},
         {"type": "takeoff"},
         {"type": "climb", "start_altitude_m": 0, "end_altitude_m": alt, "mach": min(mach, 0.6)},
-        {"type": "cruise", "start_altitude_m": alt, "end_altitude_m": alt,
-         "mach": mach, "distance_m": inputs["range_m"]},
+        {
+            "type": "cruise",
+            "start_altitude_m": alt,
+            "end_altitude_m": alt,
+            "mach": mach,
+            "distance_m": inputs["range_m"],
+        },
         {"type": "descent", "start_altitude_m": alt, "end_altitude_m": 600, "mach": min(mach, 0.5)},
         {"type": "approach", "start_altitude_m": 600},
         {"type": "landing"},
@@ -256,12 +260,14 @@ def _run_with_aviary(inputs: dict[str, Any]) -> dict[str, Any]:
 
     converged = run_result["converged"]
     results = extract_results(prob, converged)
-    results.update({
-        "success": True,
-        "runtime_seconds": run_result["runtime_seconds"],
-        "iterations": run_result["iterations"],
-        "timed_out": run_result.get("timed_out", False),
-    })
+    results.update(
+        {
+            "success": True,
+            "runtime_seconds": run_result["runtime_seconds"],
+            "iterations": run_result["iterations"],
+            "timed_out": run_result.get("timed_out", False),
+        }
+    )
 
     smry = run_result.get("summary", {})
     results["total_fuel_burned_kg"] = smry.get("fuel_burned_kg")
@@ -287,15 +293,17 @@ def _run_with_nseg_from_inputs(inputs: dict[str, Any]) -> dict[str, Any]:
     sid = session["session_id"]
 
     try:
-        set_vehicle({
-            "session_id": sid,
-            "weight_kg": inputs["weight_kg"],
-            "wing_area_m2": inputs["ref_area_m2"],
-            "cd0": inputs["cd0"],
-            "k": inputs["k"],
-            "tsfc_1_per_s": inputs["tsfc_1_per_s"],
-            "max_thrust_n": inputs["max_thrust_n"],
-        })
+        set_vehicle(
+            {
+                "session_id": sid,
+                "weight_kg": inputs["weight_kg"],
+                "wing_area_m2": inputs["ref_area_m2"],
+                "cd0": inputs["cd0"],
+                "k": inputs["k"],
+                "tsfc_1_per_s": inputs["tsfc_1_per_s"],
+                "max_thrust_n": inputs["max_thrust_n"],
+            }
+        )
 
         segments = inputs.get("segments") or _build_default_segments(inputs)
         set_segments({"session_id": sid, "segments": segments})

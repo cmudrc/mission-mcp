@@ -37,8 +37,7 @@ def _register_tools(server: FastMCP) -> None:
     @server.tool(
         name="set_vehicle",
         description=(
-            "Set vehicle parameters: weight_kg, wing_area_m2, cd0, k "
-            "(induced drag factor), tsfc_1_per_s, max_thrust_n."
+            "Set vehicle parameters: weight_kg, wing_area_m2, cd0, k (induced drag factor), tsfc_1_per_s, max_thrust_n."
         ),
         tags={"mission", "vehicle"},
     )
@@ -52,16 +51,18 @@ def _register_tools(server: FastMCP) -> None:
         max_thrust_n: float = 0.0,
         cl_max: float = 2.0,
     ) -> dict[str, Any]:
-        return tools.set_vehicle({
-            "session_id": session_id,
-            "weight_kg": weight_kg,
-            "wing_area_m2": wing_area_m2,
-            "cd0": cd0,
-            "k": k,
-            "tsfc_1_per_s": tsfc_1_per_s,
-            "max_thrust_n": max_thrust_n,
-            "cl_max": cl_max,
-        })
+        return tools.set_vehicle(
+            {
+                "session_id": session_id,
+                "weight_kg": weight_kg,
+                "wing_area_m2": wing_area_m2,
+                "cd0": cd0,
+                "k": k,
+                "tsfc_1_per_s": tsfc_1_per_s,
+                "max_thrust_n": max_thrust_n,
+                "cl_max": cl_max,
+            }
+        )
 
     @server.tool(
         name="set_segments",
@@ -166,10 +167,12 @@ def _register_tools(server: FastMCP) -> None:
         session_id: str,
         constraints: list[dict[str, Any]],
     ) -> dict[str, Any]:
-        return tools.check_constraints({
-            "session_id": session_id,
-            "constraints": constraints,
-        })
+        return tools.check_constraints(
+            {
+                "session_id": session_id,
+                "constraints": constraints,
+            }
+        )
 
 
 def build_server() -> FastMCP:

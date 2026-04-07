@@ -105,12 +105,14 @@ def _run_aviary(session, timeout_seconds: int = 300) -> dict[str, Any]:
     session.aviary_converged = converged
 
     results = extract_results(prob, converged)
-    results.update({
-        "success": True,
-        "runtime_seconds": run_result["runtime_seconds"],
-        "iterations": run_result["iterations"],
-        "timed_out": run_result.get("timed_out", False),
-    })
+    results.update(
+        {
+            "success": True,
+            "runtime_seconds": run_result["runtime_seconds"],
+            "iterations": run_result["iterations"],
+            "timed_out": run_result.get("timed_out", False),
+        }
+    )
 
     smry = run_result.get("summary", {})
     results["total_fuel_burned_kg"] = smry.get("fuel_burned_kg")

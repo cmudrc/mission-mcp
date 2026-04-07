@@ -9,7 +9,8 @@ from __future__ import annotations
 
 import logging
 import time
-from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
+from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import TimeoutError as FuturesTimeoutError
 from copy import deepcopy
 from typing import Any
 
@@ -77,8 +78,7 @@ def create_aviary_problem(
     """
     if not _AVIARY_OK:
         raise RuntimeError(
-            "Aviary is not installed. Install with: "
-            "pip install aviary==0.9.10 openmdao==3.36.0 dymos==1.13.1"
+            "Aviary is not installed. Install with: pip install aviary==0.9.10 openmdao==3.36.0 dymos==1.13.1"
         )
 
     from .design_space import DEFAULT_MISSION_CONFIG
@@ -214,18 +214,14 @@ def run_aviary(
             summary[label] = None
 
     try:
-        reserve = float(
-            prob.get_val(av.Mission.Design.RESERVE_FUEL, units="kg")[0]
-        )
+        reserve = float(prob.get_val(av.Mission.Design.RESERVE_FUEL, units="kg")[0])
         summary["reserve_fuel_kg"] = reserve
     except Exception:
         summary["reserve_fuel_kg"] = None
 
     if summary["gtow_kg"] is not None and summary["fuel_burned_kg"] is not None:
         reserve = summary.get("reserve_fuel_kg") or 0.0
-        summary["zero_fuel_weight_kg"] = (
-            summary["gtow_kg"] - summary["fuel_burned_kg"] - reserve
-        )
+        summary["zero_fuel_weight_kg"] = summary["gtow_kg"] - summary["fuel_burned_kg"] - reserve
     else:
         summary["zero_fuel_weight_kg"] = None
 
@@ -262,9 +258,7 @@ def extract_trajectory(prob) -> dict[str, Any]:
 
     for phase in phases:
         try:
-            time_vals = prob.get_val(
-                f"traj.phases.{phase}.timeseries.time", units="s"
-            )
+            time_vals = prob.get_val(f"traj.phases.{phase}.timeseries.time", units="s")
             n_points = len(time_vals)
         except Exception:
             logger.debug("No timeseries for phase '%s'", phase)
@@ -275,9 +269,7 @@ def extract_trajectory(prob) -> dict[str, Any]:
         for key, (var_name, units) in var_map.items():
             try:
                 kw = {"units": units} if units else {}
-                vals = prob.get_val(
-                    f"traj.phases.{phase}.timeseries.{var_name}", **kw
-                )
+                vals = prob.get_val(f"traj.phases.{phase}.timeseries.{var_name}", **kw)
                 trajectory[key].extend(float(v) for v in vals.flatten())
             except Exception:
                 trajectory[key].extend([None] * n_points)
@@ -303,9 +295,7 @@ def extract_results(prob, converged: bool) -> dict[str, Any]:
 
     if results["gtow_kg"] is not None and results["fuel_burned_kg"] is not None:
         reserve = results.get("reserve_fuel_kg") or 0.0
-        results["zero_fuel_weight_kg"] = (
-            results["gtow_kg"] - results["fuel_burned_kg"] - reserve
-        )
+        results["zero_fuel_weight_kg"] = results["gtow_kg"] - results["fuel_burned_kg"] - reserve
     else:
         results["zero_fuel_weight_kg"] = None
 

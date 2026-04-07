@@ -29,16 +29,23 @@ def get_trajectory(payload: dict[str, Any]) -> dict[str, Any]:
         trajectory = session.trajectory
         requested = payload.get("variables")
         all_vars = [
-            "time_s", "altitude_ft", "mach", "mass_kg",
-            "throttle", "drag_N", "distance_nmi",
+            "time_s",
+            "altitude_ft",
+            "mach",
+            "mass_kg",
+            "throttle",
+            "drag_N",
+            "distance_nmi",
         ]
         if requested:
             invalid = [v for v in requested if v not in all_vars]
             if invalid:
-                return {"error": {
-                    "type": "ValidationError",
-                    "message": f"Unknown variable(s): {invalid}. Available: {all_vars}",
-                }}
+                return {
+                    "error": {
+                        "type": "ValidationError",
+                        "message": f"Unknown variable(s): {invalid}. Available: {all_vars}",
+                    }
+                }
             data = {v: trajectory.get(v, []) for v in requested}
         else:
             data = {v: trajectory.get(v, []) for v in all_vars}
@@ -61,7 +68,7 @@ def get_trajectory(payload: dict[str, Any]) -> dict[str, Any]:
             "trajectory": {
                 "segments": session.results["segments"],
                 "note": "NSEG backend provides per-segment data, not continuous timeseries. "
-                        "Use Aviary backend for full trajectory.",
+                "Use Aviary backend for full trajectory.",
             },
         }
 

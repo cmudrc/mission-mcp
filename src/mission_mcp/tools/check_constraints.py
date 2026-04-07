@@ -57,27 +57,33 @@ def check_constraints(payload: dict[str, Any]) -> dict[str, Any]:
         label = c.get("label", f"{variable} {operator} {target}")
 
         if variable not in SUPPORTED_VARIABLES:
-            return {"error": {
-                "type": "ValidationError",
-                "message": f"Unknown constraint variable: '{variable}'. Supported: {sorted(SUPPORTED_VARIABLES)}",
-            }}
+            return {
+                "error": {
+                    "type": "ValidationError",
+                    "message": f"Unknown constraint variable: '{variable}'. Supported: {sorted(SUPPORTED_VARIABLES)}",
+                }
+            }
 
         if operator not in VALID_OPERATORS:
-            return {"error": {
-                "type": "ValidationError",
-                "message": f"Invalid operator: '{operator}'. Must be one of: {sorted(VALID_OPERATORS)}",
-            }}
+            return {
+                "error": {
+                    "type": "ValidationError",
+                    "message": f"Invalid operator: '{operator}'. Must be one of: {sorted(VALID_OPERATORS)}",
+                }
+            }
 
         actual = results_data.get(variable)
         if actual is None:
-            constraint_results.append({
-                "label": label,
-                "variable": variable,
-                "satisfied": False,
-                "actual_value": None,
-                "target_value": target,
-                "margin": None,
-            })
+            constraint_results.append(
+                {
+                    "label": label,
+                    "variable": variable,
+                    "satisfied": False,
+                    "actual_value": None,
+                    "target_value": target,
+                    "margin": None,
+                }
+            )
             all_satisfied = False
             continue
 
@@ -98,15 +104,17 @@ def check_constraints(payload: dict[str, Any]) -> dict[str, Any]:
         if not satisfied:
             all_satisfied = False
 
-        constraint_results.append({
-            "label": label,
-            "variable": variable,
-            "operator": operator,
-            "target_value": target_f,
-            "actual_value": round(actual_f, 2),
-            "satisfied": satisfied,
-            "margin": round(margin, 2),
-        })
+        constraint_results.append(
+            {
+                "label": label,
+                "variable": variable,
+                "operator": operator,
+                "target_value": target_f,
+                "actual_value": round(actual_f, 2),
+                "satisfied": satisfied,
+                "margin": round(margin, 2),
+            }
+        )
 
     n_ok = sum(1 for r in constraint_results if r["satisfied"])
     summary = f"{n_ok} of {len(constraint_results)} constraints satisfied."

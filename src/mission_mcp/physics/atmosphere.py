@@ -14,23 +14,23 @@ import math
 from dataclasses import dataclass
 
 # Sea-level reference values
-T0 = 288.15       # K    – sea-level temperature
-P0 = 101325.0      # Pa   – sea-level pressure
-RHO0 = 1.225       # kg/m^3  – sea-level density
-A0 = 340.294       # m/s  – sea-level speed of sound
-G0 = 9.80665       # m/s^2
-R_AIR = 287.0528    # J/(kg·K) – specific gas constant for dry air
-GAMMA = 1.4         # ratio of specific heats for air
+T0 = 288.15  # K    – sea-level temperature
+P0 = 101325.0  # Pa   – sea-level pressure
+RHO0 = 1.225  # kg/m^3  – sea-level density
+A0 = 340.294  # m/s  – sea-level speed of sound
+G0 = 9.80665  # m/s^2
+R_AIR = 287.0528  # J/(kg·K) – specific gas constant for dry air
+GAMMA = 1.4  # ratio of specific heats for air
 
 # Layer definitions: (base altitude [m], lapse rate [K/m])
 _LAYERS: list[tuple[float, float]] = [
-    (0.0,      -0.0065),     # Troposphere
-    (11000.0,   0.0),        # Tropopause / Lower stratosphere
-    (20000.0,   0.001),      # Upper stratosphere
-    (32000.0,   0.0028),     # Upper stratosphere (continued)
-    (47000.0,   0.0),        # Stratopause
-    (51000.0,  -0.0028),     # Mesosphere
-    (71000.0,  -0.002),      # Upper mesosphere
+    (0.0, -0.0065),  # Troposphere
+    (11000.0, 0.0),  # Tropopause / Lower stratosphere
+    (20000.0, 0.001),  # Upper stratosphere
+    (32000.0, 0.0028),  # Upper stratosphere (continued)
+    (47000.0, 0.0),  # Stratopause
+    (51000.0, -0.0028),  # Mesosphere
+    (71000.0, -0.002),  # Upper mesosphere
 ]
 
 # Pre-compute base temperature and pressure at each layer boundary.

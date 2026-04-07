@@ -16,11 +16,7 @@ def compute_block_fuel(segments: list[dict[str, Any]]) -> float:
 def compute_block_range_nm(segments: list[dict[str, Any]]) -> float:
     """Sum horizontal distance across airborne segments [nmi]."""
     airborne = {"takeoff", "climb", "cruise", "descent", "approach", "landing"}
-    return sum(
-        seg.get("distance_m", 0.0)
-        for seg in segments
-        if seg.get("segment_type") in airborne
-    ) / 1852.0
+    return sum(seg.get("distance_m", 0.0) for seg in segments if seg.get("segment_type") in airborne) / 1852.0
 
 
 def compute_block_time_hr(segments: list[dict[str, Any]]) -> float:

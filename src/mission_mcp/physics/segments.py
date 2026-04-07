@@ -13,7 +13,7 @@ import math
 from dataclasses import dataclass
 from typing import Any
 
-from .atmosphere import G0, GAMMA, R_AIR, dynamic_pressure, isa, mach_to_tas
+from .atmosphere import G0, dynamic_pressure, mach_to_tas
 
 
 @dataclass(frozen=True, slots=True)
