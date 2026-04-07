@@ -10,18 +10,18 @@ from typing import Any
 
 def compute_block_fuel(segments: list[dict[str, Any]]) -> float:
     """Sum fuel burned across all segments (taxi-to-taxi)."""
-    return sum(seg.get("fuel_burned_kg", 0.0) for seg in segments)
+    return float(sum(seg.get("fuel_burned_kg", 0.0) for seg in segments))
 
 
 def compute_block_range_nm(segments: list[dict[str, Any]]) -> float:
     """Sum horizontal distance across airborne segments [nmi]."""
     airborne = {"takeoff", "climb", "cruise", "descent", "approach", "landing"}
-    return sum(seg.get("distance_m", 0.0) for seg in segments if seg.get("segment_type") in airborne) / 1852.0
+    return float(sum(seg.get("distance_m", 0.0) for seg in segments if seg.get("segment_type") in airborne)) / 1852.0
 
 
 def compute_block_time_hr(segments: list[dict[str, Any]]) -> float:
     """Sum time across all segments [hours]."""
-    return sum(seg.get("time_s", 0.0) for seg in segments) / 3600.0
+    return float(sum(seg.get("time_s", 0.0) for seg in segments)) / 3600.0
 
 
 def payload_range_point(

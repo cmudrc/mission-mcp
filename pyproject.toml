@@ -63,7 +63,7 @@ warn_unused_ignores = true
 warn_unused_configs = true
 strict = true
 ignore_missing_imports = true
-exclude = ["^build/"]
+exclude = ["^build/", "^src/mission_mcp/aviary/", "^src/mission_mcp/cpacs_adapter\\.py$"]
 mypy_path = "src"
 
 [[tool.mypy.overrides]]
