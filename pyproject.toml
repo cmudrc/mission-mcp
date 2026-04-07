@@ -68,8 +68,7 @@ mypy_path = "src"
 
 [[tool.mypy.overrides]]
 module = ["mission_mcp.aviary.*", "mission_mcp.cpacs_adapter", "mission_mcp.tools.run_mission"]
-disallow_untyped_defs = false
-warn_return_any = false
+follow_imports = "skip"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
