@@ -11,7 +11,7 @@ from ..session_manager import session_manager
 logger = logging.getLogger(__name__)
 
 
-def _run_nseg(session) -> dict[str, Any]:
+def _run_nseg(session: Any) -> dict[str, Any]:
     """Run all segments in order using the built-in NSEG physics."""
     vehicle = session.vehicle
     if not vehicle:
@@ -73,7 +73,7 @@ def _run_nseg(session) -> dict[str, Any]:
     }
 
 
-def _run_aviary(session, timeout_seconds: int = 300) -> dict[str, Any]:
+def _run_aviary(session: Any, timeout_seconds: int = 300) -> dict[str, Any]:
     """Run the mission using NASA Aviary trajectory optimisation."""
     from ..aviary.runner import (
         create_aviary_problem,
@@ -124,7 +124,7 @@ def _run_aviary(session, timeout_seconds: int = 300) -> dict[str, Any]:
     except Exception as exc:
         logger.warning("Trajectory extraction failed: %s", exc)
 
-    return results
+    return dict(results)
 
 
 def run_mission(payload: dict[str, Any]) -> dict[str, Any]:
